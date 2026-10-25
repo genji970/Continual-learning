@@ -2,6 +2,8 @@
 
 **On-policy GRPO for continual learning and recursive self-improvement in LLMs.**
 
+self-improvement is not yet ready but am planned to do it using data distribution 
+
 ## Architecture
 
 ```text
