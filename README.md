@@ -75,6 +75,8 @@ python -u -m continual_train.train --ray-num-workers 2
 - **[Self-Distillation Enables Continual Learning](https://proceedings.mlr.press/v306/shenfeld26a.html):** Self-distillation for retaining old capabilities → **future retention strategy**.
 
 ## Visualization
+**ACC Matrix**
+<img width="420" height="258" alt="Image" src="https://github.com/user-attachments/assets/8bada889-65d2-4421-8693-57faffeac820" />
 
 Two GIFs show **task-wise representation drift under different training/sampling methods**. Each frame tracks the **same fixed samples**, projected onto the PCA basis fitted before training; colors indicate domains, and movement shows how representations change after each task.
 
