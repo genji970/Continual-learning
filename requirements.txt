@@ -1,0 +1,29 @@
+# PyTorch / CUDA 12.4
+# Install from the cu124 wheel index first.
+torch==2.6.0
+torchvision==0.21.0
+torchaudio==2.6.0
+
+# Hugging Face
+transformers>=4.56,<5
+accelerate>=1.4,<2
+peft>=0.15,<1
+
+# NumPy / PyArrow compatibility
+numpy==1.26.3
+pyarrow==25.0.1
+
+# Datasets
+datasets==5.0.1
+
+# Distributed Training
+ray[train]==2.59.0
+
+# Utilities
+tqdm>=4.66
+psutil>=5.9
+matplotlib>=3.8
+pytest>=8
+
+# HTTP dependency compatibility
+h11>=0.16,<1

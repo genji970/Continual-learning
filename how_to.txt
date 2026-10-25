@@ -1,0 +1,123 @@
+pip install -r requirements.txt
+
+### data parsing failure investigation ###
+
+    # 실제 데이터셋 전체 검사 및 실패율 집계
+    python data_load.py --dataset all
+
+    # MATH 학습 데이터 전체 검사--
+    python data_load.py --dataset math --split train
+
+    # 오프라인 토이 테스트
+    python data_load.py --toy
+
+# trace mode
+
+cd ~/recursive
+
+source config.sh
+
+export RAY_RUNTIME_ENV_IGNORE_GITIGNORE=1
+export RAY_DEDUP_LOGS=0
+export NCCL_DEBUG=INFO
+
+unset RAY_ADDRESS
+
+export NCCL_P2P_DISABLE=0
+export NCCL_SHM_DISABLE=1
+
+export RL_BASELINE_MODE="reuse"
+unset RL_BASELINE_RESTORE_COUNTS
+
+python -u -m continual_train.train \
+  --trace-mode \
+  --ray-num-workers 2 
+
+###
+nvlink가 제대로 연결되었는지 확인 용도
+nvidia-smi topo -m
+nvidia-smi nvlink --status
+
+
+##########
+
+cd ~/recursive
+
+source config.sh
+
+export RAY_RUNTIME_ENV_IGNORE_GITIGNORE=1
+export RAY_DEDUP_LOGS=0
+export NCCL_DEBUG=INFO
+
+export NCCL_P2P_DISABLE=0
+export NCCL_SHM_DISABLE=1
+
+export RL_BASELINE_MODE="reuse"
+unset RL_BASELINE_RESTORE_COUNTS
+unset RAY_ADDRESS
+
+mkdir -p outputs
+set -o pipefail
+
+for method in euclidean cosine pca_knn; do
+    echo "========== GRPO + $method =========="
+
+    RL_TRAIN_SAMPLER="$method" \
+    python -u -m continual_train.train \
+        --trace-mode \
+        --ray-num-workers 2 \
+        2>&1 | tee "outputs/train_${method}.log"
+
+    if [ "${PIPESTATUS[0]}" -ne 0 ]; then
+        echo "FAILED: $method"
+        break
+    fi
+done
+
+
+
+
+
+
+
+
+
+
+###################################
+
+
+cd ~/recursive
+
+apt update
+apt install unzip
+# 실시간 속도 출력 코드 적용
+unzip -o realtime_speed_patch.zip
+
+# 코드 적용 확인
+grep -n '\[SPEED\]' train/rollout.py
+grep -n '\[EVAL PROGRESS\]' continual_train/evaluate.py
+grep -n '\[TRAIN PROGRESS\]' continual_train/train.py
+
+# 실시간 출력 설정
+export PYTHONUNBUFFERED=1
+export RAY_RUNTIME_ENV_IGNORE_GITIGNORE=1
+export RAY_DEDUP_LOGS=0
+
+unset RAY_ADDRESS
+unset NCCL_P2P_DISABLE
+
+export NCCL_P2P_LEVEL=NVL
+export NCCL_SHM_DISABLE=0
+export NCCL_DEBUG=INFO
+export NCCL_DEBUG_SUBSYS=INIT,GRAPH
+
+source config.sh
+
+# 로그 저장 + 터미널 실시간 출력
+mkdir -p outputs
+set -o pipefail
+
+python -u -m continual_train.train \
+  --trace-mode \
+  --ray-num-workers 2 \
+  2>&1 | tee outputs/live_training.log

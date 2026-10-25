@@ -1,0 +1,16 @@
+*
+!*/
+!*.py
+!*.sh
+!*.txt
+!.gitignore
+
+/outputs/**
+
+!/outputs/
+!/outputs/**/
+
+!/outputs/**/*.png
+!/outputs/**/*.gif
+
+!/outputs/eval_samples/**
