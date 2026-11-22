@@ -7,7 +7,7 @@ self-improvement is not yet ready but am planned to do it using data distributio
 ## Architecture
 
 ```text
-Domain datasets → Sampling → Ray GPU workers (TP / FSDP2)
+Domain datasets → Sampling → Ray GPU workers TP
                 → Rollout → Reward verification → GRPO update
                 → Cross-domain evaluation → Checkpoint → Next domain
 ```
@@ -19,7 +19,7 @@ recursive/
 ├── config.py                # Model and training configuration
 ├── config.sh                # Experiment settings
 ├── data_load.py             # Dataset loading and prompt formatting
-├── distributed.py           # Ray actors, NCCL, TP / FSDP2
+├── distributed.py           # Ray actors, NCCL, TP / FSDP2(not yet done)
 ├── rollout.py               # KV-cache generation
 ├── policy.py                # Reward verification and GRPO
 ├── sampling.py              # Random / Euclidean / Cosine / PCA-kNN
