@@ -43,7 +43,7 @@ recursive/
 | Parallelism | Ray orchestration + TP or FSDP2 / NCCL |
 | Reward | `3 × correctness + format + cleanliness` |
 | Sampling | Random, Euclidean, Cosine, PCA-kNN |
-| Domains | Mathematics, Science, Social Science, Finance; Coding dataset supported |
+| Domains | Mathematics, Science, Social Science, Finance|
 | Evaluation | Accuracy, forgetting, backward/forward transfer |
 
 - **Reward:** correct final answer, `Final Answer:` formatting, and clean termination (no unrelated continuation).
